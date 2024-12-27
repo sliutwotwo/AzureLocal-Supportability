@@ -16,77 +16,36 @@ About 10 minutes after validation is started, the following error message will b
 From the seed node run the following PowerShell command to retrieve the detailed error from the LCM Controller Event log:
 
 ```
-Get-WinEvent -LogName Microsoft.AzureStack.LCMController.EventSource/Admin | ? ID -eq 31 | ? LevelDisplayName -eq Error | fl
+(Get-WinEvent -LogName Microsoft.AzureStack.LCMController.EventSource/Admin | ? ID -eq 31 | ? LevelDisplayName -eq Error | ? Message -match "String was not recognized as a valid DateTime.").message
 ```
 
 You should see output with an error message similar to the following:
 
-```
-TimeCreated  : 25/12/2024 1:37:57 AM
-ProviderName : Microsoft.AzureStack.LCMController.EventSource
-Id           : 31
-Message      : Error event message from edge common logger: Exception while checking time of notifcation sent, error = System.FormatException: String was not recognized as a valid DateTime.
-                  at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
-                  at EdgeCommonClient.NotificationClientUtils.IsNotificationWithinExpiry(String notification, IEdgeCommonLogger logger)
-```
+_Error event message from edge common logger: Exception while checking time of notifcation sent, error = System.FormatException: String was not recognized as a valid DateTime.<br>
+&emsp;&emsp;at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)<br>
+&emsp;&emsp;at EdgeCommonClient.NotificationClientUtils.IsNotificationWithinExpiry(String notification, IEdgeCommonLogger logger)_
+
 You can also validate what the current culture settings are for the System account, this is the account that the LCM Controller Service runs under:
 
 ```
-$User = New-Object System.Security.Principal.NTAccount('NT Authority\System')
-$sid = $User.Translate([System.Security.Principal.SecurityIdentifier]).value
-
-get-Itemproperty -Path "Registry::HKEY_USERS\${sid}\Control Panel\International\" -name LocaleName
-get-Itemproperty -Path "Registry::HKEY_USERS\${sid}\Control Panel\International\" -name sLongDate
-get-Itemproperty -Path "Registry::HKEY_USERS\${sid}\Control Panel\International\" -name sShortDate
-```
-If the above returns values that do not match the below then you have hit the issue and can use one of the suggestions below to address the issue.
-
-```
-LocalName  != en-US
-sLongDate  != dddd, MMMM d, yyyy
-sShortDate != M/d/yyyy
+$dateformat = Get-ItemProperty -Path "Registry::HKEY_USERS\S-1-5-18\Control Panel\International\" 
+if ($dateformat.sShortDate -ne "M/d/yyyy" -or $dateFormat.sLongDate -ne "dddd, MMMM d, yyyy") {cls;Write-Host -ForeGroundColor red "`nDate format is not expected! Please run the recommended mitigation steps.`n"} else {cls;Write-Host -ForeGroundColor green "`nExpected Date format!`n"}
 ```
 
 # Cause
 Nodes are not set with Culture/Language settings matching en-US / English (United States) resulting in the DateTime format not being recognized. This issue is a regression in the latest build of the LCM Extension (version 30.2411.1.760), which includes the fix for the previous (from 2411.0 release) issue, but now results in this new issue. The fix for this is in progress. **The current workaround/mitigation steps are outlined below**.
 
-# Workaround/Mitigation Details
-
-## Workaround/Mitigation Considerations
-- Only one of these options is required to move past the Validation Timeout
-- The Workaround outlined above does not require node reboots
-- The Mitigation outlined above does require node reboots
-- The Workaround only changes the DateTime format in the Registry, while the Mitigation changes the current format to English (United States)
-
-# Workaround Details
-1. From the Azure Portal, clean up all prior cluster resources in the Resource Group
+# Mitigation
+1. From the Azure Portal, you only need to cleanup the cluster object in the resource group. Note it will have type Azure Local and has a lock on it which must be removed prior to deletion. You do not need to remove the Arc Machine, Storage Account or Keyvault as they can be reused.
 2. On each Node, run the following PowerShell Commands:
 
 **Note:** The following commands will only change the DateTime format for the values stored in the registry for the System account which is what is used by the service during Validation. They will not change the Culture or Language Settings for the Nodes. This is enough to workaround the Validation issue Timeout for Deployment to start.
 
 ```
-$User = New-Object System.Security.Principal.NTAccount('NT Authority\System')`
-$sid = $User.Translate([System.Security.Principal.SecurityIdentifier]).value`
-Set-ItemProperty -Path "Registry::HKEY_USERS\${sid}\Control Panel\International\" -name sLongDate -value "dddd, MMMM d, yyyy"`
-Set-ItemProperty -Path "Registry::HKEY_USERS\${sid}\Control Panel\International\" -name sShortDate -value "M/d/yyyy"`
-Get-Service LcmController | Restart-Service`
+Set-ItemProperty -Path "Registry::HKEY_USERS\S-1-5-18\Control Panel\International\" -name sLongDate -value "dddd, MMMM d, yyyy"
+Set-ItemProperty -Path "Registry::HKEY_USERS\S-1-5-18\Control Panel\International\" -name sShortDate -value "M/d/yyyy"
+Get-Service LcmController | Restart-Service
 ```
 3. Start the Azure Local Deployment Wizards over again.
 
-**Note:** Attempting Validation again from this point will fail, you will need to cleanup the cluster object in the Azure portal and start the deployment wizard over in the Azure Portal. If you attempt to validate without doing this the error you will see will be the following: "Validate Operation is not allowed in Current State [Disconnected] for HciCluster....."
-
-# Mitigation Details
-1. From the Azure Portal, clean up all prior cluster resources in the Resource Group
-2. On each Node, perform the following steps to change the current format to `English (United States)`:
-   1. From sconfig, choose Selection 9
-   2. On the `Date and Time` Window, click on `Change date and time...`
-   3. On the `Date and Time Settings` Window, click on `Change calendar settings`
-   4. On the `Region` Window in the `Formats` tab, change the `Format` dropdown option to: `English (United States)`
-   5. On the `Region` Window in the `Formats` tab, click `Apply`
-   6. On the `Region` Window in the `Administrative` tab, click on `Copy settings...`
-   7. On the `Welcome screen and new user account settings` Window, check the box for `Welcome screen and system accounts`
-   8. On the `Welcome screen and new user account settings` Window, click `OK`
-   9. With these settings applied, Restart the Node
-3. Start the Azure Local Deployment Wizards over again.
-
-**Note:** Attempting Validation again from this point will fail, you will need to cleanup the cluster object in the Azure portal and start the deployment wizard over in the Azure Portal. If you attempt to validate without doing this the error you will see will be the following: "Validate Operation is not allowed in Current State [Disconnected] for HciCluster....."
+**Note:** If you did not do step 1 and instead attemp Validation again it will fail with the following error: "Validate Operation is not allowed in Current State [Disconnected] for HciCluster....."
