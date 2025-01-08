@@ -1,10 +1,12 @@
-# Overview
+# Symptoms
+
 If update attempts fail in **'CauPreRequisites'** step with an error message that looks something like the below, then we need to manually clean up the directory **_C:\UpdateDistribution_** directory on all the cluster nodes before proceeding.
 ```
 Type 'CauPreRequisites' of Role 'CAU' raised an exception: Could not finish cau prerequisites due to error 'Cannot remove item C:\UpdateDistribution\<any_file_name>: Access to the path is denied.'
 ```
 
-# How to mitigate and clean up state before retrying
+# Mitigation Details
+## How to mitigate and clean up state before retrying
 1. Resolve any leftover state from previous runs
 
    `Invoke-CauRun -ForceRecovery -Force`
