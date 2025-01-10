@@ -3,7 +3,7 @@
 **As of January 6th, 2025:** A new LCM Extension has been pushed to all regions
 - **LCM Extension version 30.2411.2.789** is now available with the fix for this issue
 - All net-new deployments should no longer need any workarounds/mitigations to proceed past this issue
-- Any clusters previously requiring the workaround/mitigation can take the updated LCM Extension, cleanup the Cluster Resource and start the Azure Local Deployment Wizard over again (basically steps 1 and 3 from the [Mitigation Section Below](https://github.com/Azure/AzureLocal-Supportability/edit/main/TSG/Deployment/Triggering-deployment-settings-validation-call-results-in-OperationTimeout-2411-1-and-LCM-Extension-2411-1.md#mitigation) once the LCM Extension has been updated to 30.2411.2.789 on the Registered Nodes)
+- Any clusters previously requiring the workaround/mitigation can take the updated LCM Extension, cleanup the Cluster Resource and start the Azure Local Deployment Wizard over again (basically steps 1 and 3 from the [Mitigation Section Below](https://github.com/Azure/AzureLocal-Supportability/blob/main/TSG/Deployment/Triggering-deployment-settings-validation-call-results-in-OperationTimeout-2411-1-and-LCM-Extension-2411-1.md#mitigation) once the LCM Extension has been updated to 30.2411.2.789 on the Registered Nodes)
 
 # Symptoms
   
