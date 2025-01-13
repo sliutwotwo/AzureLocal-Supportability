@@ -1,7 +1,3 @@
----
-Author: vakannan@microsoft.com
----
-
 # Add/Repair Node fails at "GenerateSSLCertificatesForAddScaleUnitNodes" with "The system cannot find the file specified."
 
 # Symptoms
