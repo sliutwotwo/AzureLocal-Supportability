@@ -8,7 +8,8 @@ The solution upgrade environment validator will throw errors with the message. T
 
 ## Only use this TSG if you have not started a solution upgrade action. 
 
-# TSG Applicability 
+# Issue Validation
+
 Run the script below on **_all of the nodes_** if the script throws the action started error on any of the nodes, then **stop and do not proceed** with this TSG
 ```
 $actionDeployExists = Test-Path "C:\ECEStore\efb61d70-47ed-8f44-5d63-bed6adc0fb0f\086a22e3-ef1a-7b3a-dc9d-f407953b0f84"
@@ -16,8 +17,7 @@ $actionUpgradeExists= Test-Path "C:\EceStore\efb61d70-47ed-8f44-5d63-bed6adc0fb0
 if ($actionDeployExists -or $actionUpgradeExists) { throw "An action started do not proceed with this tsg" }
 ```
 
-
-# Remediation Instructions 
+# Mitigation Details
 Run the below commands on **_all nodes_** in the cluster 
 1. Close all existing Powershell sessions on the host (remote or local) and open a new Powershell session
 2. Run the command ```Stop-Service LCMController```

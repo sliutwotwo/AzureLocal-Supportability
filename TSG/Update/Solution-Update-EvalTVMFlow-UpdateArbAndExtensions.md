@@ -1,8 +1,7 @@
 When applying the solution update, the update fails and displays one of the error messages described below.
 
+# Symptoms
 
-Symptoms
-===================================================================================================================================================================================================================
 When trying to update Azure Local 23H2 version 2408.x to 2411 you can hit this issue.  
 The issue that causes the failure can result in one of the following error messages:
 
@@ -12,8 +11,7 @@ Error 1:
 Error 2:
 **“Type 'UpdateArbAndExtensions' of Role 'MocArb' raised an exception: Clear-AzContext failed with 0 and Exception calling "Initialize" with "1" argument(s): "Object reference not set to an instance of an object." at at Clear-AzPowershellCache, C:\NugetStore\Microsoft.AzureStack.MocArb.LifeCycle.1.2411.0.14\content\Scripts\MocArbHelper.psm1: line 3250 at Login-AzPowershellSessio."**
 
-Issue Validation
-===================================================================================================================================================================================================================
+# Issue Validation
 
 Run this cmdlet on each node to see what powershell module versions are present
 `Get-InstalledModule Az.Accounts`
@@ -30,14 +28,12 @@ Version              Name                     
 -------                  ----                                       ----------                 -----------  
 7.7.0                    Az.Resources                   PSGallery          Microsoft Azure PowerShel…
 
-Cause
-=============================================================================================================================================================================================
+# Cause
 
 There is an issue with Az.Accounts module versions 3.0.4 and up that causes it to write an error to $global:error which causes update flow to throw an exception and fail.
 We also need compatible versions of Az.Resources and Az.ConnectedMachine with Az.Accounts 3.0.3
 
-Mitigation Details
-=======================================================================================================================================================================================================================
+# Mitigation Details
 
 *   On each node of the cluster, run the following commands. 
 ```Powershell
