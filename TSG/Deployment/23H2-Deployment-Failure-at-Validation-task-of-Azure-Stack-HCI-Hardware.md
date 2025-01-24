@@ -48,4 +48,4 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\SystemGua
 
 3. Restart the node.
 
-4. In the Azure Portal, retry the failed validation by clicking "Try Again" button in the deploy blade.
+4. In the Azure Portal, retry the failed validation by clicking "Try Again" button in the deploy blade.
