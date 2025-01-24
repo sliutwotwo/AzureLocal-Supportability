@@ -19,7 +19,7 @@ This indicates the request to reach the online Solution Builder Extension (SBE) 
 
 # Cause
 
-The deployment process for Azure Local uses the solution extension that is located on each system at `C:\SBE` to perform hardware update and configuration tasks during the deployment process. To assure an invalid or recalled extension has not been placed in that location the predeployment logic needs to be able to access the online manifest from your hardware vendor to confirm the extension files at `C:\SBE` are supported.
+The deployment process for Azure Local uses the solution extension that is located on each system at `C:\SBE` to perform hardware update and configuration tasks during the deployment process. The predeployment validation logic needs to be able to access the online manifest from your hardware vendor to assure an invalid or recalled extension has not been placed at `C:\SBE`.
 
 The most common cause of this issue is the firewall blocking access to one of the following addresses or the redirection target of one of those addresses.
 
