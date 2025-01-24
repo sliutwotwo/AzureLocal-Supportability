@@ -21,7 +21,7 @@ if ($result -eq "Virtualization-based security: Status: Not enabled" -or $result
     Write-Host "The known issue is hit. You can follow the below steps to mitigate the issue"
 }
 else {
-   Write-Host "This is not a known issue addressed in this article. Please skip the blow steps and reach out to CSS team for troubleshooting" 
+    Write-Host "This is not a known issue addressed in this article. Please skip the blow steps and reach out to CSS team for troubleshooting" 
 }
 ```
 If you see the message "The known issue is hit" in a node, follow the below mitigation steps to resolve the issue on the node. Otherwise, if you do see the message "This is not a known issue addressed in this article" on all nodes, please skip below sections.
