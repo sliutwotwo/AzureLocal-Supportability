@@ -1,16 +1,4 @@
----
 
-title: 23H2 Deployment Failure at Validation task of Azure Stack HCI Hardware
-
-product: Azure Local
-
-foundinbuild:
-
-fixedinbuild: N/A
-
-type: KI
-
----
 
   
 
