@@ -28,6 +28,7 @@ The SBE package is in several ways between the end of bootstrap until the end of
 
 ## Scenario: `ExtractOEMContents.ps1` failures
 This extract script is responsible for confirming the SBE staged at `C:\SBE` is:
+- Comparing the local extension to an online extension manifest (to confirm the local extension has not been recalled). This requires [firewall rules be opened to hardware vendor specific endpoints](./Firewall-blocks-SBE-validation.md)
 - Trusted based on signature and hash checks
 - Matches the system model
 - Is supported by the solution version being deployed
