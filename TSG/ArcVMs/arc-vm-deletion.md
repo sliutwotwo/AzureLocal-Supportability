@@ -12,7 +12,8 @@ On deleting an Arc VM in the specified time frame above, the Arc VM no longer ex
 
 A misconfiguration on one of the cloud components prevented Arc VM delete operations from flowing down to the Arc resource bridge.
 
-Note: This issue is not tied to any specific software releases for Azure Local
+> [!NOTE]
+> This issue is not tied to any specific software releases for Azure Local.
 
 ## Mitigation Details
 
