@@ -15,17 +15,18 @@ A misconfiguration on one of the cloud components prevented Arc VM delete operat
 
 Microsoft resolved this issue via an emergency fix on February 2nd, 2025. All Arc VM deletions initiated after this date are expected to function as intended without further intervention.
 
-### Workaround steps to clean up orphaned Arc VMs**
+### Workaround steps to clean up orphaned Arc VMs
 
 1. Recreate the Arc VM from the Azure portal using the same values as the original orphaned VM for the below parameters:
 
-     - Resource group
-     - VM name
-     - VM image
-     - Admin credentials
+    - Resource group
+    - VM name
+    - VM image
+    - Admin credentials
+    
 
-    > [!NOTE]
-    > When recreating the Arc VM, ensure to uncheck guest management for the Arc VM and do not attach any NICs or disks.
+ 
+    ***When recreating the Arc VM, ensure to uncheck guest management for the Arc VM and do not attach any NICs or disks.***
 
     If you are unsure which resource group, the orphaned VM belonged to - you’ll need to navigate through your resource groups and go to the **Settings** section within each resource group and select the **Deployments** blade. Review the list of deployment names to identify whether the VM was part of that specific resource group.
 
