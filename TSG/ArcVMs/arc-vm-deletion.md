@@ -25,8 +25,8 @@ Microsoft resolved this issue via an emergency fix on February 2nd, 2025. All Ar
     - Admin credentials
     
 
-    > [!NOTE]
-> When recreating the Arc VM, ensure to uncheck guest management for the Arc VM and do not attach any NICs or disks.
+ 
+    ***When recreating the Arc VM, ensure to uncheck guest management for the Arc VM and do not attach any NICs or disks.***
 
     If you are unsure which resource group, the orphaned VM belonged to - you’ll need to navigate through your resource groups and go to the **Settings** section within each resource group and select the **Deployments** blade. Review the list of deployment names to identify whether the VM was part of that specific resource group.
 
