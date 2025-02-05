@@ -1,3 +1,5 @@
+## Workaround for deletion issue affecting Arc VMs running on Azure Local, version 23H2
+
 This TSG covers workaround steps specific to addressing an issue Microsoft has identified where a subset of Arc VMs deleted between Jan 31th, 2025 and Feb 2nd, 2025 were not properly deleted.
 
 ## Symptom
