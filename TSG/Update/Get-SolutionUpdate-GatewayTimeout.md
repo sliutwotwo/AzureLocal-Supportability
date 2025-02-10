@@ -1,5 +1,5 @@
 # Symptoms
-When monitoring update progress in the Azure Update Management portal, you may notice that the state has not changed for a long time. Additionally, when checking the state on the Azure Local cluster node using Get-SolutionUpdate, the cmdlet may be unresponsive and eventually fail with a GatewayTimeout error.
+When monitoring update progress in the Azure Update Management portal, you may notice that the state has not changed for over an hour. Additionally, when checking the state on the Azure Local cluster node using Get-SolutionUpdate, the cmdlet may be unresponsive and eventually fail with a GatewayTimeout error.
 
 ![ps-gatewaytimeout.png](/TSG/Update/ps-gatewaytimeout.png)
 
