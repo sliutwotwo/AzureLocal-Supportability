@@ -53,3 +53,18 @@ Get-ClusterGroup "Azure Stack HCI Update Service Cluster Group"
 ```
 
 Finally, use Get-SolutionUpdate to check the state of the update and verify that the update service is able to respond to commands again.
+
+```powershell
+Get-SolutionUpdate | ft Version, State, UpdateStateProperties
+```
+
+Sample output:
+```
+
+[v-host1]: PS C:\> Get-SolutionUpdate | ? State -eq Installing | ft Version, State, UpdateStateProperties
+
+Version           State UpdateStateProperties
+-------           ----- ---------------------
+10.2411.2.12 Installing 80% complete.
+
+```
