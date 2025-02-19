@@ -15,7 +15,7 @@ For Deployment customers, we don't allow group policy settings. However, for exi
 1. Open Edit Group Policy on the host.
 1. Go to Computer Configuration → Administrative Templates → Windows Components → Windows Remote Management (WinRM) → WinRM Client.
 1. Set "Trusted Hosts" to be **"Not Configured"** as shown in the screenshot below.
-![Image](./images/settrustedhosts.png)
+![Image](./images/trustedhosts.png)
 1. Run `gpupdate /force` from Powershell session.
 1. Repeat 1-4 on all hosts.
 
