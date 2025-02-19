@@ -19,7 +19,7 @@ Typically, a scenario of using the `-PrepareOnly` option to "prepare" in advance
 **Tip:** Preparing before installing an update is still a best practice.  Prior to resolution of the issue described in this guide, you can immediately follow the mitigation steps as soon as you finish preparing (On Monday, after step 2 is done).
 
 ### Scenario 2: exposed by updates taking several retries
-Even if you being the update immediately (don't ever use the `-PrepareOnly` parameter, this issue may also materialize if your update requires one or more retries to complete such.  
+Even if you begin the update immediately (don't ever use the `-PrepareOnly` parameter), this issue may also materialize if your update requires one or more retries to complete such as in a scenario like the below:  
 
 1. You use the portal or PowerShell to immediately start an update that includes an SBE on Monday morning:
 `Get-SolutionUpdate -Id <ResourceId> | Start-SolutionUpdate`
