@@ -1,10 +1,5 @@
 # Known Issue: There is not enough space on the disk. Observability subdirectory UdiSessions folder is too large
 
-
----
-author: jehua@microsoft.com, alexbass@microsoft.com, truptim@microsoft.com
----
-
 The folder C:\Observability\Download\UdiSessions is growing too large, causing low disk space issues. There is a pruner scheduled task that is responsible for managing space in C:\Observability to ensure that it does not grow too large, but the volume of data being written outpaces what the pruner can prune and so it is left in an error state.
 
 # Symptoms
