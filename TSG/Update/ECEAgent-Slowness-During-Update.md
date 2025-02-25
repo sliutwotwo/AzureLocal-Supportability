@@ -31,7 +31,7 @@ if ($mostRecentMASUpdate -ne $null )
     $xml = $mostRecentMASUpdate.ProgressAsXml
     $task = Select-Xml -XPath "//Step[@Name='Failover ECE Service to new Node']" -Content $xml | Select-Object -ExpandProperty Node | Select-Object -exp Task
     $startTime = Get-Date $task.StartTimeUtc
-    $endTime = Get-Date $task.EndTimeUtc
+    $endTime = $task.EndTimeUtc
 
     if ($mostRecentMASUpdate.Status -eq "Running" -or $mostRecentMASUpdate.Status -eq "Waiting" )
     {
