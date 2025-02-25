@@ -22,7 +22,7 @@ Running the below command from one of the cluster nodes while the agent is stuck
                 Start-Sleep -Seconds 5
                 $eceagent = Get-WmiObject -Class Win32_Service -Filter "Name='ECEAgent'"
                 
-                $rety = 0
+                $retry = 0
                 $filepath = $eceagent.PathName.Replace("C:", $("\\" + $(hostname) + "\c$")).Replace('"',"")
                 while ($eceagent.State -ne "Running")
                 {
