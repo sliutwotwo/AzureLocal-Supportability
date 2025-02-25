@@ -2,7 +2,47 @@
 
 ## Symptoms
 
-The slowness can cause the update to take significantly longer than expected and possibly timeout. The exact symptom of this issue is that the interface 'FailoverECEService' takes a long time to complete. If this interface takes longer than 15 minutes to complete the stamp is likely experiencing this issue. 
+The slowness can cause the update to take significantly longer than expected and possibly timeout. The exact symptom of this issue is that the step with name 'Failover ECE Service to new Node' takes a long time to complete. If this step takes longer than 15 minutes to complete the cluster  is likely experiencing this issue. The portal will look like the screenshot below and get stuck for a long time.
+![alt text](image.png)
+
+### Detection Script
+This detection script can be used to detect if ECE is experiencing the issue while an update is running. If the update is not currently running but the previous update got stuck and the portal looked like the screen shot above apply the remediation and then retry the update. If the update gets stuck again while it is in progress run the detection script again and follows its recommendations.
+
+``` Powershell
+Import-Module ECEClient
+$ErrorActionPreference = "Stop"
+
+$eceClient = Create-ECEClusterServiceClient
+try
+{
+    $plans = $eceClient.GetActionPlanInstances().GetAwaiter().GetResult()
+}
+catch
+{
+    $ErrorMsg = "There was an error retrieving action plan information from the ECE service. Please try again in a few minutes"
+    throw $ErrorMsg
+}
+
+$masUpdate = $plans | Where-Object { ($null -ne $_.ActionPlanName ) -and (($_.ActionPlanName -match "MAS Update")) }
+$sortedMASUpdate = @( $masUpdate | Sort-Object LastModifiedDateTime )
+$mostRecentMASUpdate = $sortedMASUpdate[-1]
+$xml = $mostRecentMASUpdate.ProgressAsXml
+$task = Select-Xml -XPath "//Step[@Name='Failover ECE Service to new Node']" -Content $xml | Select-Object -ExpandProperty Node | Select-Object -exp Task
+$startTime = Get-Date $task.StartTimeUtc
+$endTime = Get-Date $task.EndTimeUtc
+
+if ($mostRecentMASUpdate.Status -eq "Running" -or $mostRecentMASUpdate.Status -eq "Waiting" )
+{
+    if  ($startTime.AddMinutes(15) -lt Get-Date -and [string]::IsNullOrEmpty($endTime))
+    {
+        Write-Host "ECE slowness issue detected. Please run the agent restart remediation from the ECEAgent Causing Slowness during Update TSG"
+    }
+}
+
+Write-Host "An update is not running or the slowness issue was not detected"
+
+
+```
 
 ### Issue Confirmation
 1) Examine the progress xml for the update. 
@@ -16,7 +56,7 @@ Running the below command from one of the cluster nodes while the agent is stuck
 ``` Powershell 
  $scriptBlock = {
             try {
-                Trace-Execution "Running ECEAgent service restart on $(hostname)"
+                Write-Host "Running ECEAgent service restart on $(hostname)"
                 $eceagent = Get-WmiObject -Class Win32_Service -Filter "Name='ECEAgent'"
                 Stop-Process $eceagent.ProcessId -Force
                 Start-Sleep -Seconds 5
@@ -34,10 +74,10 @@ Running the below command from one of the cluster nodes while the agent is stuck
                     }
                     Start-Sleep -Seconds 1
                 }
-                Trace-Execution "ECE Agent service was restarted on $(hostname)"
+                Write-Host "ECE Agent service was restarted on $(hostname)"
             }
             catch {
-                Trace-Execution "ECE Agent service does not exist. Unable to restart on $(hostname)"
+                throw "ECE Agent service does not exist. Unable to restart on $(hostname)"
             }
         }
     $nodes = Get-Clusternode | select -expandproperty Name
