@@ -26,16 +26,19 @@ catch
 $masUpdate = $plans | Where-Object { ($null -ne $_.ActionPlanName ) -and (($_.ActionPlanName -match "MAS Update")) }
 $sortedMASUpdate = @( $masUpdate | Sort-Object LastModifiedDateTime )
 $mostRecentMASUpdate = $sortedMASUpdate[-1]
-$xml = $mostRecentMASUpdate.ProgressAsXml
-$task = Select-Xml -XPath "//Step[@Name='Failover ECE Service to new Node']" -Content $xml | Select-Object -ExpandProperty Node | Select-Object -exp Task
-$startTime = Get-Date $task.StartTimeUtc
-$endTime = Get-Date $task.EndTimeUtc
-
-if ($mostRecentMASUpdate.Status -eq "Running" -or $mostRecentMASUpdate.Status -eq "Waiting" )
+if ($mostRecentMASUpdate -ne $null )
 {
-    if  ($startTime.AddMinutes(15) -lt Get-Date -and [string]::IsNullOrEmpty($endTime))
+    $xml = $mostRecentMASUpdate.ProgressAsXml
+    $task = Select-Xml -XPath "//Step[@Name='Failover ECE Service to new Node']" -Content $xml | Select-Object -ExpandProperty Node | Select-Object -exp Task
+    $startTime = Get-Date $task.StartTimeUtc
+    $endTime = Get-Date $task.EndTimeUtc
+
+    if ($mostRecentMASUpdate.Status -eq "Running" -or $mostRecentMASUpdate.Status -eq "Waiting" )
     {
-        Write-Host "ECE slowness issue detected. Please run the agent restart remediation from the ECEAgent Causing Slowness during Update TSG"
+        if  ($startTime.AddMinutes(15) -lt $(Get-Date) -and [string]::IsNullOrEmpty($endTime))
+        {
+            Write-Host "ECE slowness issue detected. Please run the agent restart remediation from the ECEAgent Causing Slowness during Update TSG"
+        }
     }
 }
 
