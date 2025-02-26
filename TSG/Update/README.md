@@ -8,3 +8,4 @@
 * [Mitigation for 'Cannot remove item C:\UpdateDistribution' with access denied](./mitigation-for-cannot-remove-c-update-distribution-with-access-denied.md)
 * [Add/Repair Node fails at "GenerateSSLCertificatesForAddScaleUnitNodes" with "The system cannot find the file specified."](./AddNode-RepairNode-Fail-GenerateSSLCertificatesForAddScaleUnitNodes.md)
 * [Get-SolutionUpdate GatewayTimeout](./Get-SolutionUpdate-GatewayTimeout.md)
+* [UpdateOsBuildNumberInEce interface fails during Solution update because of inconsistent OS versions between nodes](./UpdateOsBuildNumberInEce-MismatchedBuilds.md)
