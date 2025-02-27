@@ -94,12 +94,13 @@ Alternatively, for scenario 3, or if you prefer to assure this issue has been re
 ```Powershell
 Invoke-Command -ComputerName (Get-ClusterNode).Name -ScriptBlock {
     $defaultPath = "C:\ClusterStorage\Infrastructure_1\Shares\SU1_Infrastructure_1\CloudMedia\SBE\Installed\metadata"
-    if ($false -eq Test-Path -Path $defaultPath) {
+    if ($false -eq (Test-Path -Path $defaultPath)) {
         $sbeConfigPath = Get-ASArtifactPath -NugetName "Microsoft.AzureStack.SBEConfiguration" 3>$null 4>$null
         $defaultPath = Join-Path -Path $sbeConfigPath -ChildPath "content"
     }
     [System.Environment]::SetEnvironmentVariable("SBEStagedMetadata", $defaultPath, "Machine")
 }
+Write-Host ("Updated 'SBEStagedMetadata' to " + [System.Environment]::GetEnvironmentVariable("SBEStagedMetadata", "Machine"))
 ```
 
 2. Once the script has been run, you can directly call the daily system health check to confirm the issue has been resolved using:
