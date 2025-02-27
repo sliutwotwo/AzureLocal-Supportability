@@ -102,8 +102,8 @@ Get-NetworkControllerReplica
       
 Test the network connection from VSwitchService and FirewallService node by running command below:
 ```Powershell
-# Set Issue Host's FQDN that report this issue
-$issueHost = "Host FQDN"
+# Set Issue Host's HostName or FQDN that report this issue
+$issueHost = "HostName Or HostFQDN"
 Test-NetConnection -ComputerName $issueHost -Port 443
 
 # Replace the `$psslPort` port you get from registry key configuration in Step2 for service fabric based Network Controller.
