@@ -1,7 +1,3 @@
----
-author: luyaof@microsoft.com
----
-
 # Symptoms
 
 From Azure Portal, you received health alert about **HostNotConnectedToController** for either a Server/Host or a VM Network Interface. 

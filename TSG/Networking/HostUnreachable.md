@@ -1,7 +1,3 @@
----
-author: luyaof@microsoft.com
----
-
 # Symptoms
 From Azure Portal, you received Health Alert about **HostUnreachable**.
 
