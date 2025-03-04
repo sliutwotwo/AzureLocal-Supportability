@@ -4,7 +4,7 @@ As part of Azure Local Update, Cumulative Dot Net Updates are installed using th
 
 This TSG has the steps to mitigate the issue where the ValidateDotNetUpdatesOnCluster action fails causing the update to fail - when the customer applies an out of band .Net security updates on the stamp.
 
-#Symptoms
+# Symptoms
 
 Update fails with the following error message - 
 
