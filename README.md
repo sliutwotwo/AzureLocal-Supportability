@@ -11,13 +11,14 @@ Troubleshooting guides (TSGs) are grouped by categories and stored in relevantly
 * [Upgrade](./TSG/Upgrade/README.md) - Upgrade from version 22H2 to 23H2.
 * [Solution Extension](./TSG/SolutionExtension/README.md) - Solution extension.
 * [LCM](./TSG/LCM/README.md) - Lifecycle Manager.
-* [Infra Lifecycle Operations](./TSG/Lifecycle/README.md) - Add Server, Repair Server, Storage.
+* [Infra Lifecycle Operations](./TSG/Lifecycle/README.md) - Add Server, Repair Server.
 * [Arc VMs](./TSG/ArcVMs/README.md) - VM lifecycle management, licensing, extensions, networking and storage.
 * [Security](./TSG/Security/README.md) - WDAC, BitLocker, Secret Rotation, Syslog, Defender for Cloud.
 * [Networking](./TSG/Networking/README.md) - Proxy and Arc Gateway.
 * [Monitoring](./TSG/Monitoring/README.md) - Insights, Metric and Alerts.
 * [Azure Virtual Desktop](./TSG/AVD/README.md) - Azure Virtual Desktop.
 * [Azure Kubernetes](./TSG/AKS/README.md) - Deployment, Networking, Update.
+* [Storage](./TSG/Storage/README.md) - Storage.
 
 ## Bug Reports
 
